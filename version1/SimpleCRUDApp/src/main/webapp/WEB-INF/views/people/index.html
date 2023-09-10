@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <link rel="stylesheet" href="../../styles/style.css">
+</head>
+<body>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    .btn {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 15px;
+        width: 200px;
+        text-align: center;
+        /*display: inline-block; !* Строчно-блочный элемент *!*/
+        background: #8C959D; /* Серый цвет фона */
+        color: #fff; /* Белый цвет текста */
+        padding:5px 10px;
+        text-decoration: none; /* Убираем подчёркивание */
+        border-radius: 3px; /* Скругляем уголки */
+    }
+
+    .rectangle {
+        counter-reset: li;
+        list-style: none;
+        font: 14px "Trebuchet MS", "Lucida Sans";
+        padding: 0;
+        text-shadow: 0 1px 0 rgba(255,255,255,.5);
+    }
+    .rectangle a {
+        display: block;
+        margin: 5px auto;
+        width: 200px;
+        /*padding: .4em .4em .4em .8em;*/
+        padding:5px 10px;
+        background: #D3D4DA;
+        color: #444;
+        text-decoration: none;
+        transition: all .3s ease-out;
+        overflow: hidden;
+    }
+</style>
+
+
+<div th:each="person : ${people}" class="rectangle">
+    <a th:href="@{/people/{id}(id=${person.getId()})}"
+       th:text="${person.getFullName() + ', ' + person.getDateBorn()}">user</a>
+</div>
+
+<a href="/people/new" class="btn">Добавить человека</a>
+
+</body>
+</html>
