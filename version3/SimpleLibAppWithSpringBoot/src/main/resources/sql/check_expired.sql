@@ -1,0 +1,1 @@
+UPDATE Book SET taken_at='2001-05-01 00:00:00' WHERE id=1;
