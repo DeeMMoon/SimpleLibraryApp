@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="SimpleCRUDApp:war">
+    <output-path>$PROJECT_DIR$/SimpleCRUDApp/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>SimpleCRUDApp</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="SimpleCRUDApp.war">
+      <element id="artifact" artifact-name="SimpleCRUDApp:war exploded" />
+    </root>
+  </artifact>
+</component>

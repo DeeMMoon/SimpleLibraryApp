@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class MainController {
 
-    @GetMapping("/")
+    @GetMapping()
     public String mainPage(){
-        return "redirect:/people";
+        return "mainPage/main_page";
     }
 }

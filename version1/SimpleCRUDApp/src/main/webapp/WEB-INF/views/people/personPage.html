@@ -6,6 +6,7 @@
     <title>Person page</title>
 </head>
 <body>
+<a href="/people">Назад</a>
 <p th:text="${person.getFullName() + ', ' + person.getDateBorn()}">VALUE</p>
 
 <div th:if="${books.isEmpty()}">

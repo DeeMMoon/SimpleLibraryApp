@@ -6,6 +6,7 @@
     <title>Show</title>
 </head>
 <body>
+<a href="/books">Назад</a>
 <p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear()}">VALUE</p>
 
 <div th:if="${owner}">
