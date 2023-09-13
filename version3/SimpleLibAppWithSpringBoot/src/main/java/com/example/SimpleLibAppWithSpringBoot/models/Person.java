@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Person")
@@ -29,8 +30,13 @@ public class Person {
     @OneToMany(mappedBy = "owner")
     private List<Book> books;
 
+    @NotEmpty(message = "Password can't be empty")
+//    @Size(min = 3, max = 15, message = "The password length must be from 3 to 80 characters")
     @Column(name = "password")
     private String password;
+
+    @Column(name = "role")
+    private String role;
 
     public Person() {
 
@@ -80,4 +86,13 @@ public class Person {
     public void setBooks(List<Book> books) {
         this.books = books;
     }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
 }

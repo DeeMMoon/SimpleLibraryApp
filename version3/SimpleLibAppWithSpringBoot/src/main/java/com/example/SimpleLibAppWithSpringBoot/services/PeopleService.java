@@ -3,12 +3,9 @@ package com.example.SimpleLibAppWithSpringBoot.services;
 import com.example.SimpleLibAppWithSpringBoot.models.Book;
 import com.example.SimpleLibAppWithSpringBoot.models.Person;
 import com.example.SimpleLibAppWithSpringBoot.repositories.PeopleRepository;
-import com.example.SimpleLibAppWithSpringBoot.security.PersonDetails;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,10 +21,12 @@ public class PeopleService{
 
     private static final int EXPIRED_TIME = 864000000; //10 days
     private final PeopleRepository peopleRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public PeopleService(PeopleRepository peopleRepository) {
+    public PeopleService(PeopleRepository peopleRepository, BCryptPasswordEncoder passwordEncoder) {
         this.peopleRepository = peopleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Person> findAll() {
@@ -46,6 +45,11 @@ public class PeopleService{
 
     @Transactional
     public void update(long id, Person updatedPerson) {
+        if(updatedPerson.getPassword() == null)
+            updatedPerson.setPassword(passwordEncoder.encode(peopleRepository.findById(id).get().getPassword()));
+        else
+            updatedPerson.setPassword(passwordEncoder.encode(updatedPerson.getPassword()));
+        updatedPerson.setRole(peopleRepository.findById(id).get().getRole());
         updatedPerson.setId(id);
         peopleRepository.save(updatedPerson);
     }
@@ -55,9 +59,6 @@ public class PeopleService{
         peopleRepository.deleteById(id);
     }
 
-    public Optional<Person> getPersonByFullName(String fullName) {
-        return peopleRepository.findByUsername(fullName);
-    }
 
     public List<Book> getBooksByPersonId(long id) {
         Optional<Person> person = peopleRepository.findById(id);

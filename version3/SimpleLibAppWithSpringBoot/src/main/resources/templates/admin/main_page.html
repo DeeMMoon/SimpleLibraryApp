@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Библиотека</title>
 </head>
 <body>
-<a href="/logout">Выйти</a>
+<form th:action="@{/logout}" th:method="POST">
+    <input type="submit" value="Logout"/>
+</form>
 <a href="/people">Читатели</a>
 <a href="/books">Книги</a>
 </body>

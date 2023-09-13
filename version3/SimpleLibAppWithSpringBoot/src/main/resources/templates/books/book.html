@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -10,34 +10,40 @@
 <p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear()}">VALUE</p>
 
 <div th:if="${owner}">
-    <span>Книга сейчас у: </span> <span th:text="${owner.getFullName()}">Person Name</span>
+    <span>Книга сейчас у: </span> <span th:text="${owner.getUsername()}">Person Name</span>
 
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
     <form th:method="PATCH" th:action="@{/books/{id}/release(id=${book.getId()})}">
         <input type="submit" value="Освободить книгу"/>
     </form>
+    </div>
 </div>
 
 <div th:if="${people}">
-    <span>Эта книга свободна. Кому назначить ее?</span>
+    <span>Эта книга свободна.</span>
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
     <form th:method="PATCH" th:action="@{/books/{id}/assign(id=${book.getId()})}">
         <label for="person">Выберите человека</label>
         <select th:object="${person}" th:field="*{id}" id="person">
-            <option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getFullName()}">
+            <option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getUsername()}">
             </option>
         </select>
         <input type="submit" value="Назначить книгу"/>
     </form>
+    </div>
 </div>
 
 <hr/>
 
-<form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}">
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+<form  th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}">
     <input type="submit" value="Редактировать"/>
 </form>
-
+</div>
+<div sec:authorize="hasRole('ROLE_ADMIN')">
 <form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">
     <input type="submit" value="Удалить"/>
 </form>
-
+</div>
 </body>
 </html>

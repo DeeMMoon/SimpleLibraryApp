@@ -6,6 +6,7 @@ import com.example.SimpleLibAppWithSpringBoot.services.BookService;
 import com.example.SimpleLibAppWithSpringBoot.services.PeopleService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,14 +30,11 @@ public class BooksController {
                         @RequestParam(value = "books_per_page", required = false) Integer booksPerPage,
                         @RequestParam(value = "sort_by_year", required = false) boolean sortByYear) {
 
-
-
         if (page == null || booksPerPage == null || page < 0 || booksPerPage <= 0)
             model.addAttribute("books", booksService.findAll(sortByYear));
         else {
             model.addAttribute("books", booksService.findWithPagination(page, booksPerPage, sortByYear));
         }
-
         return "books/index";
     }
 
@@ -51,9 +49,11 @@ public class BooksController {
         else
             model.addAttribute("people", peopleService.findAll());
 
+        model.addAttribute("person", person);
         return "books/book";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/new")
     public String newBook(@ModelAttribute("book") Book Book) {
         return "books/new";
@@ -69,9 +69,11 @@ public class BooksController {
         return "redirect:/books";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") int id) {
+    public String edit(Model model, @PathVariable("id") int id, Person person) {
         model.addAttribute("book", booksService.findOne(id));
+        model.addAttribute("person", person);
         return "books/edit";
     }
 
@@ -80,7 +82,6 @@ public class BooksController {
                          @PathVariable("id") int id) {
         if (bindingResult.hasErrors())
             return "books/edit";
-
         booksService.update(id, book);
         return "redirect:/books";
     }

@@ -1,11 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Index</title>
 </head>
 <body>
-<a href="/">На главную</a>
+
+</div>
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+<a href="/admin">На главную</a>
+</div>
+
+</div>
+<div sec:authorize="hasRole('ROLE_USER')">
+    <a href="/user">На главную</a>
+</div>
+
 <a href="/books/search">Икать книгу!</a>
 
 <div th:each="book : ${books}">
@@ -24,13 +34,17 @@
 <!--    <button type="submit" th:name="sort_by_year" th:value="true" >Отсортировать по году</button>-->
 <!--</form>-->
 <form th:action="@{/books}">
+    <button type="submit" th:name="sort_by_year" th:value="true">Отсортировать по году</button>
+</form>
+<form th:action="@{/books}">
     <button type="submit" th:name="sort_by_year" th:value="false">Отменить сортировку</button>
 </form>
 
 <br/>
 <hr/>
-
+<div sec:authorize="hasRole('ROLE_ADMIN')">
 <a href="/books/new">Добавить книгу</a>
+</div>
 
 </body>
 </html>

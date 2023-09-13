@@ -38,6 +38,7 @@ public class AuthController {
     @PostMapping("/registration")
     public String performRegistration(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult){
         personValidator.validate(person, bindingResult);
+     //   System.out.println(person.getPassword());
         if(bindingResult.hasErrors())
             return "auth/registration";
         registrationService.registry(person);

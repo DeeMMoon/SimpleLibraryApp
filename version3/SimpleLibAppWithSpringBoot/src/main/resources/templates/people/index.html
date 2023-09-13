@@ -5,16 +5,16 @@
     <title>Index</title>
 </head>
 <body>
-<a href="/">На главную</a>
+<a href="/admin">На главную</a>
 <div th:each="person : ${people}">
     <a th:href="@{/people/{id}(id=${person.getId()})}"
-       th:text="${person.getFullName() + ', ' + person.getDateBorn()}">user</a>
+       th:text="${person.getUsername() + ', ' + person.getDateBorn()}">user</a>
 </div>
 
 <br/>
 <hr/>
 
-<a href="/people/new">Добавить человека</a>
+<a href="/people/new">Добавить администратора</a>
 
 </body>
 </html>
